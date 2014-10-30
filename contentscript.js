@@ -1,14 +1,14 @@
 "use strict";
-var tree = new TreeModel();
-depth = tree.parse({
-	id: 0,
-	children: {}
-});
+var get_tree = function(){
+	return new TreeModel();
+};
+var get_root = function(){
+	return get_tree().parse({id:-1});
+};
 var content = document.getElementById('mw-content-text');
 function httpGet(theUrl)
 {
     var xmlHttp = null;
-
     xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", theUrl, false );
     xmlHttp.send( null );
@@ -53,33 +53,18 @@ function onClickExpandHandler(elem) {
 		var response_div = document.createElement('div');
 		
 		response_div.innerHTML = linkcontent;
-		
-		var first_elem_counter = 0;
-		var firstelem;
-		
-		while(first_elem_counter < response_div.getElementsByClassName('mw-content-ltr')[0].children.length){
-			firstelem = response_div.getElementsByClassName('mw-content-ltr')[0].children[first_elem_counter];
-			if (firstelem.nodeName == 'P' && firstelem.innerHTML != ''){
-				firstelem = response_div.getElementsByClassName('mw-content-ltr')[0].children[first_elem_counter];
-				break;
-			}else{
-				first_elem_counter++;
-			}
-		}
+		var wqid = elem.getAttribute('id').replace('wqid_', '');
+		var node = wq_root.first(function(node){
+			return node.model.id == wqid;	
+		});
+		var depth = node.getPath().length -1;
 		var extend_div = document.createElement('div');
-		if (!elem.hasAttribute('class', 'wikibubble')){
-			if (depth.isRoot()){
-					
-			}
-		}
-		elem.removeAttribute('class');
-		elem.setAttribute('class', 'wikibubble'+depth[elem.innerHTML]);
-		extend_div.setAttribute('class', 'wikibubble_'+depth[elem.innerHTML]);
-		extend_div.setAttribute('id', elem.innerHTML);
+		console.log(wq_root);
+		extend_div.setAttribute('class', 'wikibubble_'+depth);
+		extend_div.setAttribute()
+		extend_div.innerHTML = response_div;
 		
 		elem.insertAdjacentElement('AfterEnd', extend_div);
-		
-		extend_div.insertAdjacentElement('BeforeEnd', firstelem);
 		
 		var extend_content = document.createElement('div');
 		extend_content.innerHTML = "<b>...</b>"
@@ -100,14 +85,18 @@ function onClickExpandHandler(elem) {
 		}
 	}
 }
+var wq_tree = get_tree();
+var wq_root = get_root();
 
 function extendLinks(content) {
 	var links = content.getElementsByTagName('a');
 	for(var i = 0, l = links.length; i < l; i++) {
 		if (/\/wiki\/[^#:]+$/.test(links[i].href) && links[i].innerText != 'open'){
 			links[i].setAttribute('onclick', 'return false;');
-			links[i].setAttribute('class', 'wikibubble')
+			links[i].setAttribute('id', 'wqid_'+i);
 			links[i].onclick = onClickExpandHandler(links[i]);
+			var link_node = wq_tree.parse({id:i});
+			wq_root.addChild(link_node);
 		}
 	}
 }
