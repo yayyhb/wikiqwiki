@@ -1,6 +1,6 @@
 {
 	"name": "wikiqwiki",
-  	"version": "0.1.1.0.1",
+  	"version": "0.1.1",
   	"description": "Extends all anchors at wikipedia content page recursively for better readability on wikipedia.org",
   	"permissions": [
     	"http://*.wikipedia.org/", "https://*.wikipedia.org/"
