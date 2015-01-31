@@ -12,6 +12,7 @@ float: left;
 }
 .extend_content:hover {
 border-color: #f00;
+cursor: pointer;
 }
 
 .wikibubble_1 {
