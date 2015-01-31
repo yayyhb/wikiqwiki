@@ -1,13 +1,13 @@
 {
 	"name": "wikiqwiki",
-  	"version": "1.0",
+  	"version": "0.1",
   	"description": "Extends all anchors at wikipedia content page recursively for better readability on wikipedia.org",
   	"permissions": [
-    	"http://*.wikipedia.org/"
+    	"http://*.wikipedia.org/", "https://*.wikipedia.org/"
   	],
   	"content_scripts": [
     	{
-			"matches": ["http://*.wikipedia.org/wiki/*"],
+			"matches": ["http://*.wikipedia.org/wiki/*", "https://*.wikipedia.org/wiki/*"],
       		"js" : ["src/TreeModel-min.js", "src/prototype.js", "contentscript.js"],
 			"css": ["bubble.css"]
     	}
